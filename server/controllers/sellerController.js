@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { cookieOptions, signToken } from '../utils/auth.js';
+import { cookieOptions, signToken, verifyToken } from '../utils/auth.js';
 
 const safeEqual = (a = '', b = '') => {
   const x = Buffer.from(String(a));
@@ -22,7 +22,12 @@ export async function sellerLogin(req, res) {
 
 // GET /api/seller/is-auth
 export async function sellerIsAuth(req, res) {
-  res.json({ success: true });
+  try {
+    const d = req.cookies.sellerToken && verifyToken(req.cookies.sellerToken);
+    res.json({ success: Boolean(d && d.role === 'seller' && d.email === process.env.SELLER_EMAIL) });
+  } catch {
+    res.json({ success: false });
+  }
 }
 
 // GET /api/seller/logout

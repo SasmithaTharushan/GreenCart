@@ -39,10 +39,10 @@ const Orders = () => {
         {orders?.length === 0 && <p className="text-gray-500">No orders yet.</p>}
         {orders?.map((order) => (
           <div key={order._id}
-            className="flex flex-col md:flex-row md:items-center gap-5 justify-between p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
-            <div className="flex gap-5 max-w-80">
-              <img className="w-12 h-12 object-cover" src={assets.box_icon} alt="" />
-              <div>
+            className="grid grid-cols-1 md:grid-cols-[2fr_2fr_1fr_1.5fr] md:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
+            <div className="flex gap-4 min-w-0">
+              <img className="w-12 h-12 object-cover shrink-0" src={assets.box_icon} alt="" />
+              <div className="min-w-0">
                 {order.items.map((item, index) => (
                   <p key={index} className="font-medium">
                     {item.name} <span className="text-primary">x {item.quantity}</span>
@@ -51,16 +51,16 @@ const Orders = () => {
               </div>
             </div>
 
-            <div className="text-sm md:text-base text-black/60">
+            <div className="text-sm text-black/60 min-w-0 break-words">
               <p className="text-black/80">{order.address.firstName} {order.address.lastName}</p>
               <p>{order.address.street}, {order.address.city}</p>
               <p>{order.address.state}, {order.address.zipcode}, {order.address.country}</p>
               <p>{order.address.phone}</p>
             </div>
 
-            <p className="font-medium text-lg my-auto">{currency}{order.amount.toFixed(2)}</p>
+            <p className="font-medium text-lg whitespace-nowrap">{currency}{order.amount.toFixed(2)}</p>
 
-            <div className="flex flex-col text-sm md:text-base text-black/60 gap-1">
+            <div className="flex flex-col text-sm text-black/60 gap-1">
               <p>Method: {order.paymentType}</p>
               <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
               <p>Payment: {order.isPaid ? 'Paid' : 'Pending'}</p>

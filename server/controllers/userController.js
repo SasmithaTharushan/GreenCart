@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
-import { cookieOptions, signToken, isEmail } from '../utils/auth.js';
+import { cookieOptions, signToken, isEmail, verifyToken } from '../utils/auth.js';
 
 const publicUser = (u) => ({ _id: u._id, name: u.name, email: u.email, cartItems: u.cartItems || {} });
 
@@ -39,10 +39,16 @@ export async function login(req, res) {
   res.json({ success: true, user: publicUser(user) });
 }
 
-// GET /api/user/is-auth
+// GET /api/user/is-auth  (guests get 200 + success:false, so browsers don't log an error on every visit)
 export async function isAuth(req, res) {
-  const user = await User.findById(req.userId);
-  if (!user) return res.status(401).json({ success: false, message: 'Account not found' });
+  let id;
+  try {
+    id = req.cookies.token && verifyToken(req.cookies.token).id;
+  } catch {
+    id = null;
+  }
+  const user = id && (await User.findById(id));
+  if (!user) return res.json({ success: false, user: null });
   res.json({ success: true, user: publicUser(user) });
 }
 

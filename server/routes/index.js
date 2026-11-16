@@ -21,11 +21,11 @@ const r = Router();
 
 r.post('/user/register', user.register);
 r.post('/user/login', user.login);
-r.get('/user/is-auth', authUser, user.isAuth);
+r.get('/user/is-auth', user.isAuth);
 r.get('/user/logout', user.logout);
 
 r.post('/seller/login', seller.sellerLogin);
-r.get('/seller/is-auth', authSeller, seller.sellerIsAuth);
+r.get('/seller/is-auth', seller.sellerIsAuth);
 r.get('/seller/logout', seller.sellerLogout);
 
 r.get('/product/list', product.productList);
