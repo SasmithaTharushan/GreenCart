@@ -39,7 +39,7 @@ const Orders = () => {
         {orders?.length === 0 && <p className="text-gray-500">No orders yet.</p>}
         {orders?.map((order) => (
           <div key={order._id}
-            className="grid grid-cols-1 md:grid-cols-[2fr_2fr_1fr_1.5fr] md:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[2fr_2fr_1fr_1.5fr] xl:items-center gap-5 p-5 max-w-4xl rounded-md border border-gray-300 text-gray-800">
             <div className="flex gap-4 min-w-0">
               <img className="w-12 h-12 object-cover shrink-0" src={assets.box_icon} alt="" />
               <div className="min-w-0">
