@@ -8,7 +8,8 @@ export const CATEGORIES = ['Vegetables', 'Fruits', 'Drinks', 'Instant', 'Dairy',
 // GET /api/product/list
 export async function productList(req, res) {
   const products = await Product.find({}).sort({ createdAt: -1 }).lean();
-  res.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+  // No CDN caching: stock changes and new products must show immediately.
+  res.set('Cache-Control', 'no-store');
   res.json({ success: true, products });
 }
 
