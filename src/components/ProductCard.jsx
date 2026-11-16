@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div onClick={() => navigate(url)}
-      className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white w-full cursor-pointer hover:shadow-sm transition">
+      className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white w-full min-w-0 cursor-pointer hover:shadow-sm transition">
       <div className="group flex items-center justify-center px-2 aspect-square">
         <img className="group-hover:scale-105 transition max-w-26 md:max-w-36" src={product.image[0]} alt={product.name} loading="lazy" />
       </div>
@@ -24,8 +24,8 @@ const ProductCard = ({ product }) => {
           <Stars />
           <p>(4)</p>
         </div>
-        <div className="flex items-end justify-between mt-3 gap-2">
-          <p className="md:text-xl text-base font-medium text-primary">
+        <div className="flex flex-wrap items-end justify-between mt-3 gap-2">
+          <p className="md:text-xl text-base font-medium text-primary whitespace-nowrap">
             {currency}{product.offerPrice}{' '}
             <span className="text-gray-500/60 md:text-sm text-xs line-through">{currency}{product.price}</span>
           </p>
