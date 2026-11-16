@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useAppContext } from '../context/AppContext';
-import ProductCard from '../components/ProductCard';
+import ProductGrid from '../components/ProductGrid';
+import Seo from '../components/Seo';
 
 const AllProducts = () => {
-  const { products, searchQuery } = useAppContext();
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const { products, productsLoading, searchQuery, setSearchQuery } = useAppContext();
+  const q = searchQuery.trim().toLowerCase();
 
-  useEffect(() => {
-    if (searchQuery.length > 0) {
-      setFilteredProducts(
-        products.filter((product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredProducts(products);
-    }
-  }, [products, searchQuery]);
+  const filtered = useMemo(
+    () =>
+      products.filter(
+        (p) => p.inStock && (!q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+      ),
+    [products, q]
+  );
 
   return (
-    <div className='mt-16 flex flex-col'>
-      <div className='flex flex-col items-end w-max'>
-        <p className='text-2xl font-medium uppercase'>All products</p>
-        <div className='w-16 h-0.5 bg-primary rounded-full'></div>
+    <div className="mt-16 flex flex-col">
+      <Seo title="All Products" description="Browse fresh vegetables, fruits, dairy, bakery, drinks and pantry staples at GreenCart." />
+      <div className="flex items-end justify-between gap-4 flex-wrap">
+        <div className="flex flex-col items-end w-max">
+          <p className="text-2xl font-medium uppercase">{q ? `Results for “${searchQuery.trim()}”` : 'All products'}</p>
+          <div className="w-16 h-0.5 bg-primary rounded-full"></div>
+        </div>
+        {q && (
+          <button onClick={() => setSearchQuery('')} className="text-sm text-primary hover:underline cursor-pointer">
+            Clear search
+          </button>
+        )}
       </div>
-
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6' >
-        {filteredProducts
-          .filter((product) => product.inStock)
-          .map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))}
-      </div>
+      <ProductGrid products={filtered} loading={productsLoading} empty={q ? 'No products match your search.' : 'No products yet.'} />
     </div>
   );
 };

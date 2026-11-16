@@ -1,45 +1,29 @@
-import React from 'react';
-import { useAppContext } from '../context/AppContext';
 import { useParams } from 'react-router-dom';
-import { categories } from '../assets/assets'; // ✅ FIXED
-import ProductCard from '../components/ProductCard';
+import { useAppContext } from '../context/AppContext';
+import { categories } from '../assets/assets';
+import ProductGrid from '../components/ProductGrid';
+import Seo from '../components/Seo';
 
 const ProductsCategory = () => {
-  const { products } = useAppContext();
+  const { products, productsLoading } = useAppContext();
   const { category } = useParams();
 
-  const searchCategory = categories.find(
-    (item) => item.path.toLowerCase() === category
-  );
-
-  const filteredProducts = products.filter(
-    (product) => product.category.toLowerCase() === category
-  );
+  const searchCategory = categories.find((item) => item.path.toLowerCase() === category);
+  const filtered = products.filter((p) => p.category.toLowerCase() === category);
 
   return (
     <div className="mt-16">
+      <Seo
+        title={searchCategory?.text || 'Category'}
+        description={`Shop ${searchCategory?.text?.toLowerCase() || 'groceries'} online at GreenCart – fresh, affordable and delivered to your door.`}
+      />
       {searchCategory && (
         <div className="flex flex-col items-end w-max">
-          <p className="text-2xl font-medium">
-            {searchCategory.text.toUpperCase()}
-          </p>
+          <p className="text-2xl font-medium">{searchCategory.text.toUpperCase()}</p>
           <div className="w-16 h-0.5 bg-primary rounded-full"></div>
         </div>
       )}
-      {
-        filteredProducts.length > 0 ? (
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mt-6'>
-                {filteredProducts.map((product)=>(
-             <ProductCard key={product._id} product={product}/>       
-                ))}
-            </div>
-        ): (
-            <div className='flex items-center justify-center h-[60vh]'>
-                <p className='text-2xl font-medium text-primary' >No products found in this category.</p>
-
-            </div>
-        )
-      }
+      <ProductGrid products={filtered} loading={productsLoading} empty="No products found in this category." />
     </div>
   );
 };
