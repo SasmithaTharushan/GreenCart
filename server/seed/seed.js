@@ -1,11 +1,9 @@
 // Load the demo catalogue into MongoDB: `npm run seed` (add --reset to wipe products first).
 // Images point at /products/*.png, which Vercel serves from the public/ folder.
-import { readFile } from 'fs/promises';
 import mongoose from 'mongoose';
 import { connectDB } from '../config/db.js';
 import Product from '../models/Product.js';
-
-const products = JSON.parse(await readFile(new URL('./products.json', import.meta.url)));
+import products from './products.js';
 
 await connectDB();
 if (process.argv.includes('--reset')) {

@@ -33,6 +33,7 @@ r.get('/product/:id', product.productById);
 r.post('/product/add', authSeller, upload.array('images', 4), product.addProduct);
 r.post('/product/stock', authSeller, product.changeStock);
 r.post('/product/delete', authSeller, product.deleteProduct);
+r.post('/product/seed-demo', authSeller, product.seedDemo);
 
 r.post('/cart/update', authUser, cart.updateCart);
 

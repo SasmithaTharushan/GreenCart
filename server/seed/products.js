@@ -1,4 +1,5 @@
-[
+// Demo catalogue (35 products). Images are served from public/images/products.
+const products = [
   {
     "name": "Potato 500g",
     "category": "Vegetables",
@@ -531,4 +532,6 @@
     ],
     "inStock": true
   }
-]
+];
+
+export default products;

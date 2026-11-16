@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import { uploadBuffer, isCloudinaryReady } from '../config/cloudinary.js';
+import demoProducts from '../seed/products.js';
 
 export const CATEGORIES = ['Vegetables', 'Fruits', 'Drinks', 'Instant', 'Dairy', 'Bakery', 'Grains'];
 
@@ -71,4 +72,12 @@ export async function deleteProduct(req, res) {
   if (!mongoose.isValidObjectId(id)) return res.status(400).json({ success: false, message: 'Invalid product' });
   await Product.findByIdAndDelete(id);
   res.json({ success: true, message: 'Product deleted' });
+}
+
+// POST /api/product/seed-demo  – loads the demo catalogue, only when the store has no products yet
+export async function seedDemo(req, res) {
+  const count = await Product.countDocuments();
+  if (count > 0) return res.status(400).json({ success: false, message: `Store already has ${count} products` });
+  await Product.insertMany(demoProducts);
+  res.status(201).json({ success: true, message: `Loaded ${demoProducts.length} demo products` });
 }

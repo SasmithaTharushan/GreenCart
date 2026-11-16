@@ -60,7 +60,7 @@ Go to <https://cloudinary.com>. In **Dashboard → API Keys**, copy your cloud n
 3. Click **Deploy**. Variables that start with `VITE_` are built into the frontend, so **redeploy** whenever you change one of them.
 
 ### 4. Load the demo products (one time)
-On your computer:
+Log in at `/seller`, open **Product List** and click **Load 35 demo products**. Or, on your computer:
 
 ```bash
 npm install

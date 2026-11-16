@@ -20,10 +20,25 @@ const ProductList = () => {
     fetchProducts();
   };
 
+  const loadDemo = async () => {
+    const data = await api('/product/seed-demo', { method: 'POST' });
+    if (!data.success) return toast.error(data.message);
+    toast.success(data.message);
+    fetchProducts();
+  };
+
   return (
     <div className="no-scrollbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
       <div className="w-full md:p-10 p-4">
         <h2 className="pb-4 text-lg font-medium">All Products ({products.length})</h2>
+        {products.length === 0 && (
+          <div className="mb-6 p-4 max-w-4xl rounded-md border border-primary/40 bg-primary/5 text-sm">
+            <p>Your store has no products yet.</p>
+            <button onClick={loadDemo} className="mt-3 px-6 py-2 bg-primary hover:bg-primary-dull text-white rounded cursor-pointer">
+              Load 35 demo products
+            </button>
+          </div>
+        )}
         <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
           <table className="md:table-auto table-fixed w-full overflow-hidden">
             <thead className="text-gray-900 text-sm text-left">
